@@ -71,9 +71,7 @@
         }
     
     $ouLocation = (Get-Random $OUsAll).distinguishedname
-    
-    
-    
+        
     $accountType = 1..100|get-random 
     if($accountType -le 10){ # X percent chance of being a service account
     #service
@@ -93,13 +91,18 @@
     }
     
         $departmentnumber = [convert]::ToInt32('9999999') 
-        
+
         
     #Need to figure out how to do the L attribute
     $description = ''
     $passStrings = Get-Content "Passwords\passwords.txt"
     # Select random object
     $pwd = Get-Random -InputObject $passStrings -Count 1
+
+    $passwordSecure = 1..1000|get-random
+    if ($passwordSecure -lt 10) {
+        $pwd = ([char[]]([char]33..[char]95) + ([char[]]([char]97..[char]126)) + 0..9 | sort {Get-Random})[0..20] -join ''
+    }else{}
 
     $passwordinDesc = 1..1000|get-random
     if ($passwordinDesc -lt 10) {
