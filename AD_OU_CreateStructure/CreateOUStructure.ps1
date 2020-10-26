@@ -5,13 +5,13 @@ function Get-ScriptDirectory {
 }
 $scriptPath = Get-ScriptDirectory
 
-$TopLevelOUs = @('Admin', 'Tier 1','Tier 2','Stage', 'Quarantine', 'Grouper-Groups', 'People','Testing','.SecFrame.com')
+$TopLevelOUs = @('Admin','Tier 1','Tier 2','Stage','Quarantine','Staff','Testing','SCADA')
     
 $AdminSubOUs = @('Tier 0', 'Tier 1', 'Tier 2', 'Staging') 
     #loop before the ou name by making T#-OBJECT name as the OU
 $AdminobjectOUs = @('Accounts', 'Servers', 'Devices', 'Permissions','Roles') 
 #########################
-$skipSubOUs = @('Deprovision', 'Quarantine', 'Groups')
+$skipSubOUs = @('Disabled', 'Quarantine', 'Groups')
 #########################
 #$tierOUs = @('Tier 1', 'Tier 2')
 $ObjectSubOUs = @('ServiceAccounts', 'Groups', 'Devices','Test')
@@ -80,7 +80,7 @@ foreach ($name in $TopLevelOUs) {
         }
     }
 
-    elseif (($name -eq 'People')) {
+    elseif (($name -eq 'Staff')) {
         $fulldn = "OU=" + $name + "," + $dn 
         $csvlist = @()
         $csvlist = import-csv $3LetterCodeCSV
@@ -92,8 +92,8 @@ foreach ($name in $TopLevelOUs) {
             $csvdn = "OU=" + $ou.name + "," + $fulldn 
             
         }
-        #Create Two Sub OUs in People OU required for IDM provisioning 
-        New-ADOrganizationalUnit -Name 'Deprovisioned' -Path $fulldn -Description 'User account that have been deprovisioned by the IDM System'
+        #Create Two Sub OUs in Staff OU required for IDM provisioning 
+        New-ADOrganizationalUnit -Name 'Disabled' -Path $fulldn -Description 'User account that have been Disabled by the IDM System'
         New-ADOrganizationalUnit -Name 'Unassociated' -Path $fulldn -Description 'User Object that do have have any department affliation'
     }
     
