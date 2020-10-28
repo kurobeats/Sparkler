@@ -15,7 +15,7 @@ Install-ADDSForest `
 -ForestMode "WinThreshold" `
 -InstallDns:$true `
 -LogPath "C:\Windows\NTDS" `
--NoRebootOnCompletion:$false `
+-NoRebootOnCompletion:$true `
 -SysvolPath "C:\Windows\SYSVOL" `
 -SafeModeAdministratorPassword (ConvertTo-SecureString ($Configuration.domain.SafeModeAdministratorPassword) -AsPlainText -force) `
 -Force:$true

@@ -21,7 +21,7 @@ function Get-ScriptDirectory {
     Split-Path -Parent $PSCommandPath
 }
 $basescriptPath = Get-ScriptDirectory
-$totalscripts = 7
+$totalscripts = 9
 
 $i = 0
 cls
@@ -33,13 +33,20 @@ $agreement = Read-Host -Prompt "Type `'yes`' to get this party started."
 $agreement.tolower()
 if($agreement -ne 'yes'){exit}
 if($agreement -eq 'yes'){
-    .($basescriptPath + '\AD_Setup_Domain\DCSetup.ps1')
-    Write-Progress -Activity "Task: Deploying a fresh domain." -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
-    $I++
    $Domain = Get-addomain
+   if (!$Domain) {
+      .($basescriptPath + '\AD_Setup_Domain\DCSetup.ps1')
+      Write-Progress -Activity "Task: Deploying a fresh domain." -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
+      $I++
+      write-host "OK, fresh domain is setup, we need to reboot. Run Invoke-Sparkler.ps1 after reboot."
+      Start-Sleep -Second 10
+      Restart-Computer -f
+   }else{}
+
     .($basescriptPath + '\AD_LAPS_Install\InstallLAPSSchema.ps1')
     Write-Progress -Activity "Task: Install LAPS" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
+   
     .($basescriptPath + '\AD_OU_CreateStructure\CreateOUStructure.ps1')
     Write-Progress -Activity "Task: Creating OUs" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
@@ -49,6 +56,7 @@ if($agreement -eq 'yes'){
     $X=1
     Write-Progress -Activity "Task: Creating Users" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
+   
     .($basescriptPath + '\AD_Users_Create\CreateUsers.ps1')
     $createuserscriptpath = $basescriptPath + '\AD_Users_Create\'
     do{
@@ -57,12 +65,12 @@ if($agreement -eq 'yes'){
     $x++
     }while($x -lt $NumOfUsers)
     $AllUsers = Get-aduser -Filter *
-    
     write-host "Creating Groups on Domain" -ForegroundColor Green
     $NumOfGroups = 100..500|Get-random 
     $X=1
     Write-Progress -Activity "Task: Creating $NumOfGroups Groups" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
+    
     .($basescriptPath + '\AD_Groups_Create\CreateGroups.ps1')
     
     do{
@@ -77,6 +85,7 @@ if($agreement -eq 'yes'){
     $NumOfComps = 50..150|Get-random 
     $X=1
     Write-Progress -Activity "Task: Creating Computers" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
+    
     .($basescriptPath + '\AD_Computers_Create\CreateComputers.ps1')
     $I++
     do{
@@ -85,15 +94,14 @@ if($agreement -eq 'yes'){
     $x++
     }while($x -lt $NumOfComps)
     $Complist = get-adcomputer -filter *
-    
     $I++
     write-host "Creating Permissions on Domain" -ForegroundColor Green
     Write-Progress -Activity "Task: Creating Random Permissions" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
+   
     .($basescriptPath + '\AD_Permissions_Randomizer\GenerateRandomPermissions.ps1')
-    
-    
     $I++
     write-host "Nesting objects into groups on Domain" -ForegroundColor Green
+   
     .($basescriptPath + '\AD_Groups_Create\AddRandomToGroups.ps1')
     Write-Progress -Activity "Task: Adding Stuff to Stuff and Things" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     AddRandomToGroups -Domain $Domain -Userlist $AllUsers -GroupList $Grouplist -LocalGroupList $LocalGroupList -complist $Complist
