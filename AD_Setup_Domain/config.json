@@ -1,0 +1,10 @@
+{
+    "shell": {
+        "DefaultShell": "explorer.exe"
+    },
+    "domain": {
+        "DomainName": "sparkler.bmb",
+        "DomainNetbiosName": "SPARKLER",
+        "SafeModeAdministratorPassword": "Password123!"
+    }
+}

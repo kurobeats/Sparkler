@@ -29,18 +29,14 @@ write-host "Welcome to Sparkler"
 write-host "You are responsible for how you use this tool. It is intended for personal use only "
 write-host "and will leave a Production Active Directory server in an irreparable state."
 write-host "It is not intended for commercial use."
-Write-Host  "Press any key to continue...";
-write-host "`n"
-$null = $Host.UI.RawUI.ReadKey('NoEcho,IncludeKeyDown');
-write-host "`n"
-$agreement = Read-Host -Prompt "Type `'yes`' to deploy some randomness into a domain"
+$agreement = Read-Host -Prompt "Type `'yes`' to get this party started."
 $agreement.tolower()
 if($agreement -ne 'yes'){exit}
 if($agreement -eq 'yes'){
-   $Domain = Get-addomain
     .($basescriptPath + '\AD_Setup_Domain\DCSetup.ps1')
     Write-Progress -Activity "Task: Deploying a fresh domain." -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
+   $Domain = Get-addomain
     .($basescriptPath + '\AD_LAPS_Install\InstallLAPSSchema.ps1')
     Write-Progress -Activity "Task: Install LAPS" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
     $I++
