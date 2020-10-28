@@ -84,18 +84,18 @@
         
         
     }else{
-        $surname = get-content($scriptpath + '\AD_Users_Create\Names\family_names.txt')|get-random
+        $surname = get-content($scriptpath + '\Names\family_names.txt')|get-random
     $genderpreference = 0,1|get-random
-    if ($genderpreference -eq 0){$givenname = get-content($scriptpath + '\AD_Users_Create\Names\female_names.txt')|get-random}else{$givenname = get-content($scriptpath + '\AD_Users_Create\Names\male_names.txt')|get-random}
+    if ($genderpreference -eq 0){$givenname = get-content($scriptpath + '\Names\female_names.txt')|get-random}else{$givenname = get-content($scriptpath + '\Names\male_names.txt')|get-random}
     $name = $givenname+"."+$surname
     }
     
         $departmentnumber = [convert]::ToInt32('9999999') 
-
-        
-    #Need to figure out how to do the L attribute
+  
+    Set-ADDefaultDomainPasswordPolicy -MinPasswordLength 6 -ComplexityEnabled $False -Identity $dnsroot
+    
     $description = ''
-    $passStrings = Get-Content "\AD_Users_Create\Passwords\passwords.txt"
+    $passStrings = Get-Content ($scriptpath + '\Passwords\passwords.txt')
     # Select random object
     $pwd = Get-Random -InputObject $passStrings -Count 1
 
