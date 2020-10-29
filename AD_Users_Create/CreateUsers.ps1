@@ -87,7 +87,8 @@
         $surname = get-content($scriptpath + '\Names\family_names.txt')|get-random
     $genderpreference = 0,1|get-random
     if ($genderpreference -eq 0){$givenname = get-content($scriptpath + '\Names\female_names.txt')|get-random}else{$givenname = get-content($scriptpath + '\Names\male_names.txt')|get-random}
-    $name = $givenname+"."+$surname
+    $name = $givenname+" "+$surname
+    $samaccountname = $givenname+"."+$surname
     }
     
         $departmentnumber = [convert]::ToInt32('9999999') 
@@ -109,7 +110,7 @@
         $description = 'The account password is ' + $pwd
     }else{}
 
-    new-aduser -server $setdc -Description $Description -DisplayName $name -Name $name -SamAccountName $name -GivenName $givenname -Surname $surname -Enabled $true -Path $ouLocation -AccountPassword (ConvertTo-SecureString ($pwd) -AsPlainText -force)
+    new-aduser -server $setdc -Description $Description -DisplayName $name -Name $name -SamAccountName $samaccountname -GivenName $givenname -Surname $surname -Enabled $true -Path $ouLocation -AccountPassword (ConvertTo-SecureString ($pwd) -AsPlainText -force)
 
     $pwd = ''
     
@@ -118,8 +119,8 @@
     #Todo: Set SPN for kerberoasting.  Example attribute edit is in createcomputers.ps1
     #===============================
     
-    $upn = $name + '@' + $dnsroot
-    try{Set-ADUser -Identity $name -UserPrincipalName "$upn" }
+    $upn = $samaccountname + '@' + $dnsroot
+    try{Set-ADUser -Identity $samaccountname -UserPrincipalName "$upn" }
     catch{}
     
     ################################
