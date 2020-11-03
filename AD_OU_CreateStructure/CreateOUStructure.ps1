@@ -5,16 +5,16 @@ function Get-ScriptDirectory {
 }
 $scriptPath = Get-ScriptDirectory
 
-$TopLevelOUs = @('Admin','Tier 1','Tier 2','Stage','Quarantine','Staff','Testing','SCADA')
+$TopLevelOUs = @('Admin', 'Tier 1', 'Tier 2', 'Stage', 'Quarantine', 'Staff', 'Testing', 'SCADA')
     
 $AdminSubOUs = @('Tier 0', 'Tier 1', 'Tier 2', 'Staging') 
-    #loop before the ou name by making T#-OBJECT name as the OU
-$AdminobjectOUs = @('Accounts', 'Servers', 'Devices', 'Permissions','Roles') 
+#loop before the ou name by making T#-OBJECT name as the OU
+$AdminobjectOUs = @('Accounts', 'Servers', 'Devices', 'Permissions', 'Roles') 
 #########################
 $skipSubOUs = @('Disabled', 'Quarantine', 'Groups')
 #########################
 #$tierOUs = @('Tier 1', 'Tier 2')
-$ObjectSubOUs = @('ServiceAccounts', 'Groups', 'Devices','Test')
+$ObjectSubOUs = @('ServiceAccounts', 'Groups', 'Devices', 'Test')
 
 
 #Consodated list of all 3 letter codes which IAM uses. 
@@ -31,7 +31,7 @@ Write-host "Creating Tiered OU Structure" -ForegroundColor Green
 $topOUCount = $TopLevelOUs.count
 $x = 1
 foreach ($name in $TopLevelOUs) {
-    Write-Progress -Activity "Deploying OU Structure" -Status "Top Level OU Status:" -PercentComplete ($x/$topOUCount*100)
+    Write-Progress -Activity "Deploying OU Structure" -Status "Top Level OU Status:" -PercentComplete ($x / $topOUCount * 100)
     New-ADOrganizationalUnit -Name $Name -ProtectedFromAccidentalDeletion:$true
     $fulldn = "OU=" + $name + "," + $dn 
     #$toplevelouinfo = Get-ADOrganizationalUnit $fulldn
@@ -51,9 +51,9 @@ foreach ($name in $TopLevelOUs) {
             else {
                 foreach ($AdminobjectOU in $AdminobjectOUs) {
                     #add name together
-                    if ($adminsubou -eq 'Tier 0'){$adminOUPrefix = "T0-"}
-                    elseif ($adminsubou -eq 'Tier 1'){$adminOUPrefix = "T1-"}
-                    elseif ($adminsubou -eq 'Tier 2'){$adminOUPrefix = "T2-"}
+                    if ($adminsubou -eq 'Tier 0') { $adminOUPrefix = "T0-" }
+                    elseif ($adminsubou -eq 'Tier 1') { $adminOUPrefix = "T1-" }
+                    elseif ($adminsubou -eq 'Tier 2') { $adminOUPrefix = "T2-" }
                     $adminobjectoucombo = $adminOUPrefix + $adminobjectou
 
                     New-ADOrganizationalUnit -Name $adminobjectoucombo -Path $adminsubfulldn

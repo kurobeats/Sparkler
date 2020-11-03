@@ -1,4 +1,4 @@
-function Add-TestDrives{
+function Add-TestDrives {
     <#
     .SYNOPSIS
         Adds a powershell drive from your workstation to the domain controller. Port 9389 must be open from your machine to this DC
@@ -24,23 +24,23 @@ function Add-TestDrives{
 #>
     [CmdletBinding()]
 
-param
-(
-    [Parameter(Mandatory = $false,
-        Position = 1,
-        HelpMessage = 'Add IP or DNSName of your Domain Controller')]
-    [Alias('creds')]
-    [System.String]$TestDC = '10.1.1.10',
-    [Parameter(Position = 2,
-        HelpMessage = 'Specify the DN for the domain')]
+    param
+    (
+        [Parameter(Mandatory = $false,
+            Position = 1,
+            HelpMessage = 'Add IP or DNSName of your Domain Controller')]
+        [Alias('creds')]
+        [System.String]$TestDC = '10.1.1.10',
+        [Parameter(Position = 2,
+            HelpMessage = 'Specify the DN for the domain')]
         [System.String]$TestDN = 'domain.com',
-    [Parameter(Mandatory = $false,
-        Position = 3,
-        HelpMessage = 'Use this if you want to specify a drive variable')]
-    [System.String]$TestName = 'domain'
-)
-$ADmod = get-module -name activedirectory
-if(!$admod){import-module activedirectory}else{}
+        [Parameter(Mandatory = $false,
+            Position = 3,
+            HelpMessage = 'Use this if you want to specify a drive variable')]
+        [System.String]$TestName = 'domain'
+    )
+    $ADmod = get-module -name activedirectory
+    if (!$admod) { import-module activedirectory }else {}
 
     #Name of Drive to spit out later in a write host
     $TestFullName = $Testname + ':'
@@ -48,20 +48,20 @@ if(!$admod){import-module activedirectory}else{}
     #What level of domain is this
     $level = "Production"
     
-        if (!$domain){
-            $domain = $testfullname
-            $onscreen = 'Attempting to connect to ' + $testdc + '. Connecting to domain named: ' + $testdn
-        }
+    if (!$domain) {
+        $domain = $testfullname
+        $onscreen = 'Attempting to connect to ' + $testdc + '. Connecting to domain named: ' + $testdn
+    }
         
-        write-host $onscreen -ForegroundColor Yellow
+    write-host $onscreen -ForegroundColor Yellow
        
-        If (!(Test-Path $TestFullNAME)){New-PSDrive -Name $TestName -PSProvider ActiveDirectory -Server $testDC -Root "//RootDSE/" -scope Global -Credential $TestDN\}
+    If (!(Test-Path $TestFullNAME)) { New-PSDrive -Name $TestName -PSProvider ActiveDirectory -Server $testDC -Root "//RootDSE/" -scope Global -Credential $TestDN\ }
         
-            If ((Test-Path $TestFullNAME))
-            {
+    If ((Test-Path $TestFullNAME)) {
                 
-                Write-host To change to $level $TestDN $ type `'cd $testfullname`' -f Green
-             }else{}
+        Write-host To change to $level $TestDN $ type `'cd $testfullname`' -f Green
+    }
+    else {}
         
-        }
-    Add-TestDrives
+}
+Add-TestDrives

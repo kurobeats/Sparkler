@@ -1,4 +1,4 @@
-﻿Function CreateUser{
+﻿Function CreateUser {
 
     <#
         .SYNOPSIS
@@ -37,61 +37,65 @@
         [Parameter(Mandatory = $false,
             Position = 1,
             HelpMessage = 'Supply a result from get-addomain')]
-            [Object[]]$Domain,
+        [Object[]]$Domain,
         [Parameter(Mandatory = $false,
             Position = 2,
             HelpMessage = 'Supply a result from get-adorganizationalunit -filter *')]
-            [Object[]]$OUList,
+        [Object[]]$OUList,
         [Parameter(Mandatory = $false,
             Position = 3,
             HelpMessage = 'Supply the script directory for where this script is stored')]
         [string]$ScriptDir
     )
     
-        if(!$PSBoundParameters.ContainsKey('Domain')){
-                $setDC = (Get-ADDomain).pdcemulator
-                $dnsroot = (get-addomain).dnsroot
-            }
-            else {
-                $setDC = $Domain.pdcemulator
-                $dnsroot = $Domain.dnsroot
-            }
-        if (!$PSBoundParameters.ContainsKey('OUList')){
-            $OUsAll = get-adobject -Filter {objectclass -eq 'organizationalunit'} -ResultSetSize 300
-        }else {
-            $OUsAll = $OUList
+    if (!$PSBoundParameters.ContainsKey('Domain')) {
+        $setDC = (Get-ADDomain).pdcemulator
+        $dnsroot = (get-addomain).dnsroot
+    }
+    else {
+        $setDC = $Domain.pdcemulator
+        $dnsroot = $Domain.dnsroot
+    }
+    if (!$PSBoundParameters.ContainsKey('OUList')) {
+        $OUsAll = get-adobject -Filter { objectclass -eq 'organizationalunit' } -ResultSetSize 300
+    }
+    else {
+        $OUsAll = $OUList
+    }
+    if (!$PSBoundParameters.ContainsKey('ScriptDir')) {
+        function Get-ScriptDirectory {
+            Split-Path -Parent $PSCommandPath
         }
-        if (!$PSBoundParameters.ContainsKey('ScriptDir')){
-            function Get-ScriptDirectory {
-                Split-Path -Parent $PSCommandPath
-            }
-            $scriptPath = Get-ScriptDirectory
-        }else{
-            $scriptpath = $scriptdir
-        }
+        $scriptPath = Get-ScriptDirectory
+    }
+    else {
+        $scriptpath = $scriptdir
+    }
     
     $ouLocation = (Get-Random $OUsAll).distinguishedname
         
-    $accountType = 1..100|get-random 
-    if($accountType -le 10){ # X percent chance of being a service account
-    #service
-    $nameSuffix = "SA"
-    $description = ''
-    #removing do while loop and making random number range longer, sorry if the account is there already
-    # this is so that I can attempt to import multithreading on user creation
+    $accountType = 1..100 | get-random 
+    if ($accountType -le 10) {
+        # X percent chance of being a service account
+        #service
+        $nameSuffix = "SA"
+        $description = ''
+        #removing do while loop and making random number range longer, sorry if the account is there already
+        # this is so that I can attempt to import multithreading on user creation
     
-        $name = ""+ (Get-Random -Minimum 100 -Maximum 9999999999) + "$nameSuffix"
+        $name = "" + (Get-Random -Minimum 100 -Maximum 9999999999) + "$nameSuffix"
         
         
-    }else{
-        $surname = get-content($scriptpath + '\Names\family_names.txt')|get-random
-    $genderpreference = 0,1|get-random
-    if ($genderpreference -eq 0){$givenname = get-content($scriptpath + '\Names\female_names.txt')|get-random}else{$givenname = get-content($scriptpath + '\Names\male_names.txt')|get-random}
-    $name = $givenname+" "+$surname
-    $samaccountname = $givenname+"."+$surname
+    }
+    else {
+        $surname = get-content($scriptpath + '\Names\family_names.txt') | get-random
+        $genderpreference = 0, 1 | get-random
+        if ($genderpreference -eq 0) { $givenname = get-content($scriptpath + '\Names\female_names.txt') | get-random }else { $givenname = get-content($scriptpath + '\Names\male_names.txt') | get-random }
+        $name = $givenname + " " + $surname
+        $samaccountname = $givenname + "." + $surname
     }
     
-        $departmentnumber = [convert]::ToInt32('9999999') 
+    $departmentnumber = [convert]::ToInt32('9999999') 
   
     Set-ADDefaultDomainPasswordPolicy -MinPasswordLength 6 -ComplexityEnabled $False -Identity $dnsroot
     
@@ -100,15 +104,17 @@
     # Select random object
     $pwd = Get-Random -InputObject $passStrings -Count 1
 
-    $passwordSecure = 1..1000|get-random
+    $passwordSecure = 1..1000 | get-random
     if ($passwordSecure -lt 10) {
-        $pwd = ([char[]]([char]33..[char]95) + ([char[]]([char]97..[char]126)) + 0..9 | sort {Get-Random})[0..20] -join ''
-    }else{}
+        $pwd = ([char[]]([char]33..[char]95) + ([char[]]([char]97..[char]126)) + 0..9 | sort { Get-Random })[0..20] -join ''
+    }
+    else {}
 
-    $passwordinDesc = 1..1000|get-random
+    $passwordinDesc = 1..1000 | get-random
     if ($passwordinDesc -lt 10) {
         $description = 'The account password is ' + $pwd
-    }else{}
+    }
+    else {}
 
     new-aduser -server $setdc -Description $Description -DisplayName $name -Name $name -SamAccountName $samaccountname -GivenName $givenname -Surname $surname -Enabled $true -Path $ouLocation -AccountPassword (ConvertTo-SecureString ($pwd) -AsPlainText -force)
 
@@ -120,14 +126,14 @@
     #===============================
     
     $upn = $samaccountname + '@' + $dnsroot
-    try{Set-ADUser -Identity $samaccountname -UserPrincipalName "$upn" }
-    catch{}
+    try { Set-ADUser -Identity $samaccountname -UserPrincipalName "$upn" }
+    catch {}
     
     ################################
     #End Create User Objects
     ################################
     
-    }
+}
     
     
     
