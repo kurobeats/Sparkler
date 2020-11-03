@@ -1,7 +1,9 @@
 # Sparkler
 
 sparkler bomb
+
 [ˈspɑːklə bɒm]
+
 NOUN
  1. A bottle full of sparkler dust that once lit, is highly unpredictable. 
 
