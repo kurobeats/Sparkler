@@ -32,9 +32,9 @@ function Get-Agreement {
     Write-Host "It is not intended for commercial use."
     $agreement = Read-Host -Prompt "Type `'yes`' to get this party started."
     $agreement.tolower()
-    $result = false
+    $result = $false
     if ($agreement -eq 'yes'){
-        $result = true
+        $result = $true
     }
     return $result
 }
@@ -44,14 +44,11 @@ function Add-Domain {
     .DESCRIPTION
         Creates a new domain by calling the DCSetup script
     #>
-    param (
-        $basescriptPath
-    )
 
     .($basescriptPath + '\AD_Setup_Domain\DCSetup.ps1')
-    $i = 0
+    $ii = 0
     # Not sure why we record progress here when it is going to restart and lose state...
-    Write-Progress -Activity "Task: Deploying a fresh domain." -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
+    Write-Progress -Activity "Task: Deploying a fresh domain." -Status "Progress:" -PercentComplete ($ii/$totalscripts*100)
     Write-Host "OK, fresh domain is setup, we need to reboot. Run Invoke-Sparkler.ps1 after reboot."
     Start-Sleep -Second 10
     Restart-Computer -f
@@ -61,10 +58,6 @@ function Install-LAPSSchema {
     <#
     .DESCRIPTION Installs the LASPSchema using the InstallLAPSSchema script
     #>
-    param(
-        $basescriptPath,
-        $ii
-    )
 
     .($basescriptPath + '\AD_LAPS_Install\InstallLAPSSchema.ps1')
     Write-Progress -Activity "Task: Install LAPS" -Status "Progress:" -PercentComplete ($ii/$totalscripts*100)
@@ -74,10 +67,6 @@ function Add-OUStructure {
     <#
     .DESCRIPTION Adds OUs using the CreateOUStructure script
     #>
-    param(
-        $basescriptPath,
-        $ii
-    )
     
     .($basescriptPath + '\AD_OU_CreateStructure\CreateOUStructure.ps1')
     Write-Progress -Activity "Task: Creating OUs" -Status "Progress:" -PercentComplete ($ii/$totalscripts*100)
@@ -87,16 +76,12 @@ function Add-Users {
     <#
     .DESCRIPTION Adds Users using the AD_Users_Create script
     #>
-    param(
-        $basescriptPath,
-        $ii,
-    )
 
     Write-Host "Creating Users on Domain" -ForegroundColor Green
     $NumOfUsers = 1000..5000|Get-Random #this number is the random number of users to create on a domain.  Todo: Make process createusers.ps1 in a parallel loop
     $X=1
-    Write-Progress -Activity "Task: Creating Users" -Status "Progress:" -PercentComplete ($i/$totalscripts*100)
-    $i++
+    Write-Progress -Activity "Task: Creating Users" -Status "Progress:" -PercentComplete ($ii/$totalscripts*100)
+    $ii++
    
     .($basescriptPath + '\AD_Users_Create\CreateUsers.ps1')
     $createuserscriptpath = $basescriptPath + '\AD_Users_Create\'
@@ -114,10 +99,6 @@ function Add-Groups {
     <#
     .DESCRIPTION Adds Groups using the CreateGroups script
     #>
-    param(
-        $basescriptPath,
-        $ii
-    )
 
     Write-Host "Creating Groups on Domain" -ForegroundColor Green
     $NumOfGroups = 100..500|Get-Random 
@@ -137,10 +118,7 @@ function Add-Computers {
     <#
     .DESCRIPTION Adds Computers using the CreateComputers script
     #>
-    param(
-        $basescriptPath,
-        $ii
-    )
+
     Write-Host "Creating Computers on Domain" -ForegroundColor Green
     $NumOfComps = 50..150|Get-Random 
     $jj=1
@@ -158,10 +136,6 @@ function Add-Permissions {
     <#
     .DESCRIPTION Adds Permissions using the GenerateRandomPermissions and AddToRandomGroups scripts script
     #>
-    param(
-        $basescriptPath,
-        $ii
-    )
 
     $AllUsers = Get-ADUser -Filter *
     $Grouplist = Get-ADGroup -Filter { GroupCategory -eq "Security" -and GroupScope -eq "Global"  } -Properties isCriticalSystemObject
@@ -194,22 +168,22 @@ function Invoke-Sparkler {
         $totalscripts = 9
         $ii = 0
         $Domain = Get-ADDomain
-        cls
+        # cls
         if (!$Domain){
-            Add-Domain($basescriptPath)
+            Add-Domain
         }
         # I would prefer a different way of recording progress than this but it will do for now.
-        Install-LAPSSchema($basescriptPath, $ii)
+        Install-LAPSSchema
         $ii++
-        Add-OUStructure($basescriptPath, $ii)
+        Add-OUStructure
         $ii++
-        Add-Users($basescriptPath, $ii)
+        Add-Users
         $ii++
-        Add-Groups($basescriptPath, $ii)
+        Add-Groups
         $ii++
-        Add-Computers($basescriptPath, $ii)
+        Add-Computers
         $ii + 2
-        Add-Permissions($basescriptPath, $ii)
+        Add-Permissions
     }else{
         exit
     }
