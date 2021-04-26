@@ -1,4 +1,4 @@
-﻿Function CreateUser {
+Function CreateUser {
 
     <#
         .SYNOPSIS
