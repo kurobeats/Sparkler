@@ -124,7 +124,7 @@
     }
     else {}
 
-    new-aduser -server $setdc -Description $Description -DisplayName $name -Name $name -SamAccountName $samaccountname -GivenName $givenname -Surname $surname -Enabled $true -Path $ouLocation -AccountPassword (ConvertTo-SecureString ($pwd) -AsPlainText -force)
+    new-aduser -server $setdc -Description $Description -DisplayName $name -Name $name -SamAccountName $samaccountnamecleaned -GivenName $givenname -Surname $surname -Enabled $true -Path $ouLocation -AccountPassword (ConvertTo-SecureString ($pwd) -AsPlainText -force)
 
     $pwd = ''
     
@@ -133,8 +133,8 @@
     #Todo: Set SPN for kerberoasting.  Example attribute edit is in createcomputers.ps1
     #===============================
     
-    $upn = $samaccountname + '@' + $dnsroot
-    try { Set-ADUser -Identity $samaccountname -UserPrincipalName "$upn" }
+    $upn = $samaccountnamecleaned + '@' + $dnsroot
+    try { Set-ADUser -Identity $samaccountnamecleaned -UserPrincipalName "$upn" }
     catch {}
     
     ################################
@@ -142,6 +142,3 @@
     ################################
     
 }
-    
-    
-    
