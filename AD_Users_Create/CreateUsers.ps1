@@ -91,8 +91,16 @@
         $surname = get-content($scriptpath + '\Names\family_names.txt') | get-random
         $genderpreference = 0, 1 | get-random
         if ($genderpreference -eq 0) { $givenname = get-content($scriptpath + '\Names\female_names.txt') | get-random }else { $givenname = get-content($scriptpath + '\Names\male_names.txt') | get-random }
+        
+        #remove badchars
+        $usergivenname = $givenname -replace "-|\s|'", ""
+        $usersurname = $surname -replace "-|\s|'", ""
+
         $name = $givenname + " " + $surname
-        $samaccountname = $givenname + "." + $surname
+        $samaccountname = $usergivenname + "." + $usersurname
+
+        #Trim names longer than 20 chars
+        $samaccountnamecleaned = $samaccountname -replace '(?<=^.{20}).*'
     }
     
     $departmentnumber = [convert]::ToInt32('9999999') 
