@@ -1,4 +1,4 @@
-$Configuration = Get-Content -Path AD_Setup_Domain\config.json | ConvertFrom-Json
+$Configuration = Get-Content -Path 01-AD_Setup_Domain\config.json | ConvertFrom-Json
 
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -name Shell -Value $Configuration.shell.DefaultShell
 

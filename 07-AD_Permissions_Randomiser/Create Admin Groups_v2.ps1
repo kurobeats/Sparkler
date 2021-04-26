@@ -8,7 +8,7 @@ $adplatformsourcedir = split-path -Path $scriptPath -Parent
 $permissionset = .($adplatformsourcedir + "\AD_Group_CreateAdminGroups\AD Permissions for Group Granular Access.ps1")
 #=====================================
 #3 letter affiliate codes here
-$3LetterCodeCSV = $adplatformsourcedir + '\AD_OU_CreateStructure\3lettercodes.csv'
+$3LetterCodeCSV = $adplatformsourcedir + '\03-AD_OU_CreateStructure\3lettercodes.csv'
 
 
 #=============================================

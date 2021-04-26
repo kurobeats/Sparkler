@@ -33,7 +33,7 @@ Function CreateComputer {
     }
     $scriptPath = Get-ScriptDirectory
     $scriptparent = (get-item $scriptpath).parent.fullname
-    $3lettercodes = import-csv ($scriptparent + "\AD_OU_CreateStructure\3lettercodes.csv")
+    $3lettercodes = import-csv ($scriptparent + "\03-AD_OU_CreateStructure\3lettercodes.csv")
     #=======================================================================
     $dn = (get-addomain).distinguishedname
         
