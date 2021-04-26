@@ -84,7 +84,7 @@ function Add-Users {
    $ii++
   
    .($basescriptPath + '\04-AD_Users_Create\CreateUsers.ps1')
-   $createuserscriptpath = $basescriptPath + '\AD_Users_Create\'
+   $createuserscriptpath = $basescriptPath + '\04-AD_Users_Create\'
 
    $ousAll = Get-ADOrganizationalUnit -filter *
 
