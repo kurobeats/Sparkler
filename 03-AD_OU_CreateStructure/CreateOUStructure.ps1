@@ -5,16 +5,16 @@ function Get-ScriptDirectory {
 }
 $scriptPath = Get-ScriptDirectory
 
-$TopLevelOUs = @('Admin', 'Tier 1', 'Tier 2', 'Stage', 'Quarantine', 'Staff', 'Testing', 'SCADA')
+$TopLevelOUs = @('Admin', 'Global', 'National', 'Staging', 'Quarantine', 'Staff', 'Testing', 'SCADA', 'Russia', 'Australia', 'SouthAmerica', 'Asia', 'Canada', 'UK')
     
-$AdminSubOUs = @('Tier 0', 'Tier 1', 'Tier 2', 'Staging') 
+$AdminSubOUs = @('Enterprise', 'Global', 'National', 'Staging') 
 #loop before the ou name by making T#-OBJECT name as the OU
 $AdminobjectOUs = @('Accounts', 'Servers', 'Devices', 'Permissions', 'Roles') 
 #########################
 $skipSubOUs = @('Disabled', 'Quarantine', 'Groups')
 #########################
-#$tierOUs = @('Tier 1', 'Tier 2')
-$ObjectSubOUs = @('ServiceAccounts', 'Groups', 'Devices', 'Test')
+#$tierOUs = @('Global', 'National')
+$ObjectSubOUs = @('ServiceAccounts', 'Groups', 'Devices', 'Test', 'Managed')
 
 
 #Consodated list of all 3 letter codes which IAM uses. 
@@ -51,9 +51,9 @@ foreach ($name in $TopLevelOUs) {
             else {
                 foreach ($AdminobjectOU in $AdminobjectOUs) {
                     #add name together
-                    if ($adminsubou -eq 'Tier 0') { $adminOUPrefix = "T0-" }
-                    elseif ($adminsubou -eq 'Tier 1') { $adminOUPrefix = "T1-" }
-                    elseif ($adminsubou -eq 'Tier 2') { $adminOUPrefix = "T2-" }
+                    if ($adminsubou -eq 'Enterprise') { $adminOUPrefix = "T0-" }
+                    elseif ($adminsubou -eq 'Global') { $adminOUPrefix = "T1-" }
+                    elseif ($adminsubou -eq 'National') { $adminOUPrefix = "T2-" }
                     $adminobjectoucombo = $adminOUPrefix + $adminobjectou
 
                     New-ADOrganizationalUnit -Name $adminobjectoucombo -Path $adminsubfulldn
@@ -64,7 +64,7 @@ foreach ($name in $TopLevelOUs) {
     elseif ($skipSubOUs -contains $name) {
         #this skips the creation of the sub containers
     }
-    elseif (($name -eq 'Tier 1') -or ($name -eq 'Tier 2') -or ($name -eq 'Stage')) {
+    elseif (($name -eq 'Global') -or ($name -eq 'National') -or ($name -eq 'Stage')) {
         $fulldn = "OU=" + $name + "," + $dn 
         $csvlist = @()
         $csvlist = import-csv $3LetterCodeCSV
