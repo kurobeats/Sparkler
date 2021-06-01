@@ -1,7 +1,5 @@
 $Configuration = Get-Content -Path 01-AD_Setup_Domain\config.json | ConvertFrom-Json
 
-Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -name Shell -Value $Configuration.shell.DefaultShell
-
 Get-WindowsFeature -Name AD-Domain-Services | Install-WindowsFeature -Verbose
 
 Import-Module ADDSDeployment
