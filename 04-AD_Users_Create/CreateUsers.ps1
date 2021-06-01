@@ -105,8 +105,8 @@ Function CreateUser {
     
     $departmentnumber = [convert]::ToInt32('9999999') 
   
-    Set-ADDefaultDomainPasswordPolicy -MinPasswordLength 6 -ComplexityEnabled $False -Identity $dnsroot
-    
+    Set-ADDefaultDomainPasswordPolicy -Identity $dnsroot -LockoutDuration 00:01:00 -LockoutObservationWindow 00:01:00 -ComplexityEnabled $false -ReversibleEncryptionEnabled $False -MinPasswordLength 4
+
     $description = ''
     $passStrings = Get-Content ($scriptpath + '\Passwords\passwords.txt')
     # Select random object
