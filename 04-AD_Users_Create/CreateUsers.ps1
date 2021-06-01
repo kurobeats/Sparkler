@@ -105,6 +105,7 @@ Function CreateUser {
     
     $departmentnumber = [convert]::ToInt32('9999999') 
   
+    # This beauty from https://github.com/WazeHell/vulnerable-AD/blob/master/vulnad.ps1
     Set-ADDefaultDomainPasswordPolicy -Identity $dnsroot -LockoutDuration 00:01:00 -LockoutObservationWindow 00:01:00 -ComplexityEnabled $false -ReversibleEncryptionEnabled $False -MinPasswordLength 4
 
     $description = ''
