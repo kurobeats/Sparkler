@@ -3,27 +3,16 @@
        Adds a bunch of vulns to the DC
     .DESCRIPTION
        The script was derived from @WazeHell's vulnerable-AD (https://github.com/WazeHell/vulnerable-AD)  
-    #>
+#>
 
 #Base Lists 
-$Global:HumansNames = @('Luca');
-$Global:BadPasswords = @('redwings');
-$Global:HighGroups = @('Office Admin', 'IT Admins', 'Executives');
-$Global:MidGroups = @('Senior management', 'Project management');
-$Global:NormalGroups = @('marketing', 'sales', 'accounting');
-$Global:BadACL = @('GenericAll', 'GenericWrite', 'WriteOwner', 'WriteDACL', 'Self');
-$Global:ServicesAccountsAndSPNs = @('mssql_svc,mssqlserver', 'http_svc,httpserver', 'exchange_svc,exserver');
-$Global:CreatedUsers = @();
-$Global:AllObjects = @();
-$Global:Domain = "";
-#Strings 
-$Global:Spacing = "`t"
-$Global:PlusLine = "`t[+]"
-$Global:ErrorLine = "`t[-]"
-$Global:InfoLine = "`t[*]"
-function Write-Good { param( $String ) Write-Host $Global:PlusLine  $String -ForegroundColor 'Green' }
-function Write-Bad { param( $String ) Write-Host $Global:ErrorLine $String -ForegroundColor 'red' }
-function Write-Info { param( $String ) Write-Host $Global:InfoLine $String -ForegroundColor 'gray' }
+HumansNames = @('Luca');
+BadPasswords = @('redwings');
+BadACL = @('GenericAll', 'GenericWrite', 'WriteOwner', 'WriteDACL', 'Self');
+ServicesAccountsAndSPNs = @('mssql_svc,mssqlserver', 'http_svc,httpserver', 'exchange_svc,exserver');
+CreatedUsers = @();
+AllObjects = @();
+Domain = (get-addomain).dnsroot;
 
 function GetRandom {
     Param(
@@ -37,14 +26,14 @@ function AddADGroup {
         [array]$GroupList
     )
     foreach ($group in $GroupList) {
-        Write-Info "Creating $group Group"
+        Write-Host "Creating $group Group"
         Try { New-ADGroup -name $group -GroupScope Global } Catch {}
         for ($i = 1; $i -le (Get-Random -Maximum 20); $i = $i + 1 ) {
-            $randomuser = (GetRandom -InputList $Global:CreatedUsers)
-            Write-Info "Adding $randomuser to $group"
+            $randomuser = (GetRandom -InputList CreatedUsers)
+            Write-Host "Adding $randomuser to $group"
             Try { Add-ADGroupMember -Identity $group -Members $randomuser } Catch {}
         }
-        $Global:AllObjects += $group;
+        AllObjects += $group;
     }
 }
 function AddACL {
@@ -73,26 +62,26 @@ function AddACL {
     $ADObject.psbase.commitchanges()
 }
 function BadAcls {
-    foreach ($abuse in $Global:BadACL) {
-        $ngroup = GetRandom -InputList $Global:NormalGroups
-        $mgroup = GetRandom -InputList $Global:MidGroups
+    foreach ($abuse in BadACL) {
+        $ngroup = GetRandom -InputList NormalGroups
+        $mgroup = GetRandom -InputList MidGroups
         $DstGroup = Get-ADGroup -Identity $mgroup
         $SrcGroup = Get-ADGroup -Identity $ngroup
         AddACL -Source $SrcGroup.sid -Destination $DstGroup.DistinguishedName -Rights $abuse
-        Write-Info "BadACL $abuse $ngroup to $mgroup"
+        Write-Host "BadACL $abuse $ngroup to $mgroup"
     }
-    foreach ($abuse in $Global:BadACL) {
-        $hgroup = GetRandom -InputList $Global:HighGroups
-        $mgroup = GetRandom -InputList $Global:MidGroups
+    foreach ($abuse in BadACL) {
+        $hgroup = GetRandom -InputList HighGroups
+        $mgroup = GetRandom -InputList MidGroups
         $DstGroup = Get-ADGroup -Identity $hgroup
         $SrcGroup = Get-ADGroup -Identity $mgroup
         AddACL -Source $SrcGroup.sid -Destination $DstGroup.DistinguishedName -Rights $abuse
-        Write-Info "BadACL $abuse $mgroup to $hgroup"
+        Write-Host "BadACL $abuse $mgroup to $hgroup"
     }
     for ($i = 1; $i -le (Get-Random -Maximum 25); $i = $i + 1 ) {
-        $abuse = (GetRandom -InputList $Global:BadACL);
-        $randomuser = GetRandom -InputList $Global:CreatedUsers
-        $randomgroup = GetRandom -InputList $Global:AllObjects
+        $abuse = (GetRandom -InputList BadACL);
+        $randomuser = GetRandom -InputList CreatedUsers
+        $randomgroup = GetRandom -InputList AllObjects
         if ((Get-Random -Maximum 2)) {
             $Dstobj = Get-ADUser -Identity $randomuser
             $Srcobj = Get-ADGroup -Identity $randomgroup
@@ -102,49 +91,49 @@ function BadAcls {
             $Dstobj = Get-ADGroup -Identity $randomgroup
         }
         AddACL -Source $Srcobj.sid -Destination $Dstobj.DistinguishedName -Rights $abuse 
-        Write-Info "BadACL $abuse $randomuser and $randomgroup"
+        Write-Host "BadACL $abuse $randomuser and $randomgroup"
     }
 }
 function Kerberoasting {
-    $selected_service = (GetRandom -InputList $Global:ServicesAccountsAndSPNs)
+    $selected_service = (GetRandom -InputList ServicesAccountsAndSPNs)
     $svc = $selected_service.split(',')[0];
     $spn = $selected_service.split(',')[1];
-    $password = GetRandom -InputList $Global:BadPasswords;
-    Write-Info "Kerberoasting $svc $spn"
-    Try { New-ADServiceAccount -Name $svc -ServicePrincipalNames "$svc/$spn.$Global:Domain" -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -RestrictToSingleComputer -PassThru } Catch {}
-    foreach ($sv in $Global:ServicesAccountsAndSPNs) {
+    $password = GetRandom -InputList BadPasswords;
+    Write-Host "Kerberoasting $svc $spn"
+    Try { New-ADServiceAccount -Name $svc -ServicePrincipalNames "$svc/$spn.Domain" -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -RestrictToSingleComputer -PassThru } Catch {}
+    foreach ($sv in ServicesAccountsAndSPNs) {
         if ($selected_service -ne $sv) {
             $svc = $sv.split(',')[0];
             $spn = $sv.split(',')[1];
-            Write-Info "Creating $svc services account"
+            Write-Host "Creating $svc services account"
             $password = ([System.Web.Security.Membership]::GeneratePassword(12, 2))
-            Try { New-ADServiceAccount -Name $svc -ServicePrincipalNames "$svc/$spn.$Global:Domain" -RestrictToSingleComputer -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -PassThru } Catch {}
+            Try { New-ADServiceAccount -Name $svc -ServicePrincipalNames "$svc/$spn.Domain" -RestrictToSingleComputer -AccountPassword (ConvertTo-SecureString $password -AsPlainText -Force) -PassThru } Catch {}
 
         }
     }
 }
 function ASREPRoasting {
     for ($i = 1; $i -le (Get-Random -Maximum 6); $i = $i + 1 ) {
-        $randomuser = (GetRandom -InputList $Global:CreatedUsers)
-        $password = GetRandom -InputList $Global:BadPasswords;
+        $randomuser = (GetRandom -InputList CreatedUsers)
+        $password = GetRandom -InputList BadPasswords;
         Set-AdAccountPassword -Identity $randomuser -Reset -NewPassword (ConvertTo-SecureString $password -AsPlainText -Force)
         Set-ADAccountControl -Identity $randomuser -DoesNotRequirePreAuth 1
-        Write-Info "AS-REPRoasting $randomuser"
+        Write-Host "AS-REPRoasting $randomuser"
     }
 }
 function DnsAdmins {
     for ($i = 1; $i -le (Get-Random -Maximum 6); $i = $i + 1 ) {
-        $randomuser = (GetRandom -InputList $Global:CreatedUsers)
+        $randomuser = (GetRandom -InputList CreatedUsers)
         Add-ADGroupMember -Identity "DnsAdmins" -Members $randomuser
-        Write-Info "DnsAdmins : $randomuser"
+        Write-Host "DnsAdmins : $randomuser"
     }
-    $randomg = (GetRandom -InputList $Global:MidGroups)
+    $randomg = (GetRandom -InputList MidGroups)
     Add-ADGroupMember -Identity "DnsAdmins" -Members $randomg
-    Write-Info "DnsAdmins Nested Group : $randomg"
+    Write-Host "DnsAdmins Nested Group : $randomg"
 }
 function DCSync {
     for ($i = 1; $i -le (Get-Random -Maximum 6); $i = $i + 1 ) {
-        $randomuser = (GetRandom -InputList $Global:CreatedUsers)
+        $randomuser = (GetRandom -InputList CreatedUsers)
 
         $userobject = (Get-ADUser -Identity $randomuser).distinguishedname
         $ACL = Get-Acl -Path "AD:\$userobject"
@@ -163,32 +152,22 @@ function DCSync {
         $ACL.psbase.AddAccessRule($ACEGetChanges)
 
         Set-ADUser $randomuser -Description "Replication Account"
-        Write-Info "Giving DCSync to : $randomuser"
+        Write-Host "Giving DCSync to : $randomuser"
     }
 }
 function DisableSMBSigning {
     Set-SmbClientConfiguration -RequireSecuritySignature 0 -EnableSecuritySignature 0 -Confirm -Force
 }
 
-function Invoke-VulnAD {
-    $Global:Domain = $DomainName
-    Set-ADDefaultDomainPasswordPolicy -Identity $Global:Domain -LockoutDuration 00:01:00 -LockoutObservationWindow 00:01:00 -ComplexityEnabled $false -ReversibleEncryptionEnabled $False -MinPasswordLength 4
-    AddADGroup -GroupList $Global:HighGroups
-    Write-Good "$Global:HighGroups Groups Created"
-    AddADGroup -GroupList $Global:MidGroups
-    Write-Good "$Global:MidGroups Groups Created"
-    AddADGroup -GroupList $Global:NormalGroups
-    Write-Good "$Global:NormalGroups Groups Created"
-    BadAcls
-    Write-Good "BadACL Done"
-    Kerberoasting
-    Write-Good "Kerberoasting Done"
-    ASREPRoasting
-    Write-Good "AS-REPRoasting Done"
-    DnsAdmins
-    Write-Good "DnsAdmins Done"
-    DCSync
-    Write-Good "DCSync Done"
-    DisableSMBSigning
-    Write-Good "SMB Signing Disabled"
-}
+BadAcls
+Write-Host "BadACL Done"
+Kerberoasting
+Write-Host "Kerberoasting Done"
+ASREPRoasting
+Write-Host "AS-REPRoasting Done"
+DnsAdmins
+Write-Host "DnsAdmins Done"
+DCSync
+Write-Host "DCSync Done"
+DisableSMBSigning
+Write-Host "SMB Signing Disabled"
