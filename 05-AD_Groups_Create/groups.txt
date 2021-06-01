@@ -1,15 +1,412 @@
+Account Collectors
+Account Executives
+Account Managers
+Account Representatives
+Accountants
 Accounting
+Accounting Analysts
+Accounting Directors
+Accounting Staff
+Accounts Payable/Receivable Clerks
+Actors
+Actuarys
+Addiction Counselors
+Administrative Analysts
+Administrative Assistants
+Administrative Managers
+Administrative Specialists
+Administrators
+Animal Breeders
+Animal Control Officers
+Animal Shelter Board Members
+Animal Shelter Managers
+Animal Shelter Volunteers
+Animal Shelter Workers
+Animal Trainers
+Application Developers
+Architects
+Archivists
+Area Sales Managers
+Artificial Intelligence Engineers
+Artists
+Assistant Engineers
+Assistant Golf Professionals
+Assistant Managers
+Assistant Professors
+Astronomers
+Atmospheric Scientists
+Attorneys
+Auditing Clerks
+Auditors
+B2B Sales Specialists
+Bank Tellers
+Barbers
+Baristas
+Beauticians
+Bellhops
+Benefits Managers
+Biological Engineers
+Biologists
+Biostatisticians
+Board of Directors
+Boilermakers
+Bookkeepers
+Branch Managers
+Brand Managers
+Brand Strategists
+Budget Analysts
+Building Inspectors
+Bus Drivers
+Bus Persons
+Business Analysts
+Business Managers
+C-Suite
+Cab Drivers
+Cafeteria Workers
+Call Center Representatives
+Camera Operators
+Caregivers
+Caretaker or House Sitters
+Carpenters
+Cashiers
+Casino Hosts
+Chefs
+Chemical Engineers
+Chemists
+Chief Engineers
+Chief Executive Officers
+Chiefs
+Church Volunteers
+Civil Engineers
+Client Service Specialists
+Cloud Architects
+CNAs
+Columnists
+Commercial Loan Officers
+Community Food Project Workers
+Computer Animators
+Computer Programmers
+Computer Scientists
+Concierge
+Concierges
+Conservation Scientists
+Conservation Volunteers
+Construction Workers
+Content Creators
+Content Marketing Managers
+Content Strategists
+Continuous Improvement Consultants
+Continuous Improvement Leads
 Contractors
+Controllers
+Coordinators
+Copy Editors
+Copywriters
+Cosmetologists
+Counselors
+Couples Counselors
+Couriers
+Crane Operators
+Credit Authorisers
+Credit Counselors
+Cruise Directors
+Cruise Ship Attendants
+Customer Care Associates
+Customer Service
+Customer Service Managers
+Customer Services
+Customer Support
+Customer Support Representatives
+Data Analysts
+Data Entry
+Delivery Drivers
+Dental Hygienists
+DevOps Engineers
+Digital Marketing Managers
+Direct Salespersons
+Director of Inside Sales
+Director of Maintenance
+Director of Photography
+Directors
+Dispatcher for Trucks or Taxis
+Doctors
+Dog Walkers/Pet Sitters
+Drafters
+eCommerce Marketing Specialists
+Economists
+Editor/Proofreaders
+Electrical Engineers
+Electricians
+Emergency Relief Workers
 Engineering
+Engineering Technicians
+Engineers
+Entertainment Specialists
+Entrepreneurs
+Estheticians
+Event Planners
+Events Managers
+Executive Assistants
 Executives
+Farm Workers
+Fast Food Workers
+File Clerks
+Film Critics
+Finance Directors
+Finance Managers
+Financial Analysts
+Financial Planners
+Financial Services Representatives
+Flight Attendants
+Food Kitchen Workers
+Foremans
+Founders
+Front Desk Associates
+Front Desk Managers
+Front-Line Employees
+Funeral Attendants
+Geological Engineers
+Geologists
+Ghostwriters
+Grant Writers
+Graphic Designers
+Group Sales
+Guidance Counselors
+Habitat for Humanity Builders
+Hair Stylists
+Heads
+Heavy Equipment Operators
+Help Desk
+Help Desk Worker/Desktop Support
+Homeless Shelter Workers
+Hospital Volunteers
+Hotel Front Door Greeters
+Hotel Managers
+Hotel Receptionists
+Housekeepers
 Human Resources
+HVAC Technicians
+Information Security Analysts
 Information Technology
+Interior Designers
+Iron Workers
 IT Admins
+IT Managers
+IT Professionals
+Journalists
+Landscaping Assistants
+Landscaping Workers
+Leads
+Library Assistants
+Life Coaches
+Line Cooks
+Locksmiths
+Lodging Managers
+Machinery Operators
+Mail Carriers
+Maintenance Engineers
+Makeup Artists
 Management
+Management Consultants
+Managers
+Managing Members
+Managing Partners
+Manicurists
+Manufacturing Assemblers
+Market Development Managers
+Market Researchers
 Marketing
+Marketing Communications Managers
+Marketing Consultants
+Marketing Directors
+Marketing Managers
+Marketing Research Analysts
+Marketing Specialists
+Marketing Staff
+Massage Therapys
+Mathematicians
+Meals on Wheels Drivers
+Mechanical Engineers
+Mechanics
+Media Buyers
+Media Relations Coordinators
+Medical Administrators
+Medical Laboratory Techs
+Medical Researchers
+Medical Transcriptionists
+Meeting Planners
+Mental Health Counselors
+Mentors
+Merchandising Associates
+Mining Engineers
+Molecular Scientists
+Mortgage Loan Processors
+Motion Picture Directors
+Movers
+Music Producers
+Musicians
+Nail Technicians
+Network Administrators
+Novelist/Writers
+Nuclear Engineers
+Nurse Practitioners
+Nurses
 Office Admin
+Office Assistants
+Office Clerks
+Office Managers
+Office Volunteers
+Officers
+Online ESL Instructors
 Operations
+Operations Analysts
+Operations Assistants
+Operations Coordinators
+Operations Directors
+Operations Managers
+Operations Professionals
+Orderlys
+Organisers
+Outside Sales Managers
+Over the Phone Interpreters
+Overseers
+Owners
+Painters
+Paralegals
+Parking Attendants
+Payroll Clerks
+Payroll Managers
+Personal Assistants
+Personal Trainers
+Petroleum Engineers
+Pharmacists
+Pharmacy Assistants
+Phlebotomists
+Phone Sales Specialists
+Phone Survey Conductors
+Photographers
+Physical Therapists
+Physical Therapy Assistants
+Physicists
+Pipefitters
+Plant Engineers
+Playwrights
+Plumbers
+Political Scientists
+Porters
+Preschool Teachers
+Presidents
+Principals
+Product Managers
+Production Engineers
+Professors
+Program Administrators
+Program Managers
 Project Management
+Proposal Writers
+Proprietors
+Public Relations
+Public Relations Specialists
+Purchasing Staff
+Quality Control
+Quality Control Coordinators
+Quality Engineers
+Real Estate Brokers
+Receptionists
+Recruiters
+Recyclables Collectors
+Red Cross Volunteers
+Reiki Practitioners
+Research Assistants
+Researchers
+Reservationists
+Restaurant Chain Executives
+Restaurant Managers
+Retail Workers
+Risk Managers
+Roofers
+Safety Engineers
 Sales
+Sales Analysts
+Sales Associates
+Sales Engineers
+Sales Managers
+Sales Representatives
+Salon Managers
+School Bus Drivers
+School Counselors
+School Volunteers
+Screenwriters
+Scrum Masters
+Secretarys
+Security Guards
 Senior Management
+SEO Managers
+Servers
 Service Accounts
+Service Dog Trainers
+Shareholders
+Sheet Metal Workers
+Shelf Stockers
+Shipping and Receiving Staff
+Skin Care Specialists
+Social Media Assistants
+Social Media Specialists
+Social Workers
+Sociologists
+Software Engineers
+Solar Photovoltaic Installers
+Sound Engineers
+Spa Managers
+Speech Pathologists
+Speechwriters
+Sports Volunteers
+SQL Developers
+Store Managers
+Substitute Teachers
+Suicide Hotline Volunteers
+Superintendents
+Supervisors
+Tapers
+Teachers
+Teaching Assistants
+Team Leaders
+Technical Specialists
+Technical Support Specialists
+Technical Writers
+Telemarketers
+Telephone Operators
+Telework Nurse/Doctors
+Test Scorers
+Therapists
+Title Analysts
+Title Researchers
+Tow Truck Operators
+Translators
+Travel Agents
+Travel Nurses
+Travel Writers
+Truck Drivers
+Tutor/Online Tutors
+UPS Drivers
+UX Designer & UI Developers
+Valets
+Vehicle or Equipment Cleaners
+Veterinary Assistants
+Vice President of Operations
+Video Editors
+Video Game Writers
+Video or Film Producers
+Virtual Assistants
+Wait Staff Managers
+Waiter/Waitress
+Warehouse Workers
+Web Designers
+Web Developers
+Wedding Coordinators
+Welders
+Weldings
+Well Drillers
+Yoga Instructors
+Youth Volunteers
+Zoologists
